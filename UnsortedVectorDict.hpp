@@ -17,6 +17,5 @@ class UnsortedVectorDict : public Dictionary {
 
 private:
     std::vector<int> data;
-
    [[nodiscard]] std::size_t lookup_idx(int) const;
 };

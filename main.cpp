@@ -46,12 +46,19 @@ void benchmark(Dictionary* dict, const std::string& label, int N, std::ofstream&
     }
     auto end_lookup = std::chrono::high_resolution_clock::now();
 
+    auto start_remove = std::chrono::high_resolution_clock::now();
+    for (int k : keys) {
+        dict->remove(k);
+    }
+    auto end_remove = std::chrono::high_resolution_clock::now();
+
     auto insert_time = std::chrono::duration_cast<std::chrono::microseconds>(end_insert - start_insert).count();
     auto total_lookup_time_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(end_lookup - start_lookup).count();
     long long avg_lookup_ns = total_lookup_time_ns / M;
+    auto remove_time = std::chrono::duration_cast<std::chrono::microseconds>(end_remove - start_remove).count();
 
-    std::cout << label << " [" << "N=" << N << "] — Insert: " << insert_time << "us, Avg Lookup: " << avg_lookup_ns << "ns\n";
-    csv << label << "," << "," << N << "," << insert_time << "," << avg_lookup_ns << "\n";
+    std::cout << label << " [" << "N=" << N << "] — Insert: " << insert_time << "us, Avg Lookup: " << avg_lookup_ns << "ns, Remove: " << remove_time << "us\n";
+    csv << label << "," << "," << N << "," << insert_time << "," << avg_lookup_ns << "," << remove_time <<"\n";
 
     delete dict;
 }
